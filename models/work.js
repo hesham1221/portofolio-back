@@ -13,7 +13,7 @@ const WorkSchema = new mongoose.Schema({
             type :Array
         }
     },
-    Links :{
+    links :{
         live : {
             type : String,
         },

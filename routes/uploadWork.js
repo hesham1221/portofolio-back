@@ -1,16 +1,19 @@
 const express = require('express')
+const upload = require('../middleware/upload')
 const router = express.Router()
-
+const path = require('path')
 const WorkSchema = require('../models/work')
 
 //upload work
 router.post('/newwork',async (req,res)=>{
-    const {workTitle , workPhotos, workDescribtion} = req.body
+    const {workTitle , links,workPhotos, workDescribtion} = req.body
+    console.log(req.body)
     try {
         const newWork = await WorkSchema.create({
             workTitle ,
             workPhotos,
-            workDescribtion
+            workDescribtion,
+            links
         })
         res.status(201).json({message : 'successfully added' , work : newWork})
     } catch (error) {
@@ -18,6 +21,14 @@ router.post('/newwork',async (req,res)=>{
     }
 })
 //get work
+
+router.post('/imageupload' , upload.array('photo') , async(req,res) =>{
+    res.status(201).json(req.files)
+})
+
+router.get('/images/:id',(req,res) => {
+    res.sendFile(path.join(path.dirname(require.main.filename) , 'images' , req.params.id))
+})
 
 //get all
 router.get('/allwork',async(req,res) =>{
@@ -49,9 +60,9 @@ router.delete('/singlework/:id' , getWork,async (req,res) =>{
 //patch work
 
 router.patch('/singlework/:id' , getWork,async (req,res) =>{
-    const {workTitle , workPhotos, workDescribtion} = req.body
+    const {workTitle , workPhotos,links ,workDescribtion} = req.body
     try {
-        const patchedWork = await res.work.update({$set : {workTitle , workDescribtion , workPhotos}})
+        const patchedWork = await res.work.update({$set : {workTitle,links , workDescribtion , workPhotos}})
         res.status(200).json({message : 'successfully patched', patchedWork})
     } catch (error) {
         res.status(400).json(error)
