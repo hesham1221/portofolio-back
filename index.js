@@ -21,4 +21,4 @@ app.use(express.json())
 app.use(login)
 app.use(uploadWork)
 
-app.listen(3000)
+app.listen(process.env.PORT || 5000)
