@@ -5,6 +5,9 @@ const path = require('path')
 const WorkSchema = require('../models/work')
 
 //upload work
+router.get('/' , (req,res) =>{
+    res.send('connected')
+})
 router.post('/newwork',async (req,res)=>{
     const {workTitle , links,workPhotos, workDescribtion} = req.body
     console.log(req.body)
