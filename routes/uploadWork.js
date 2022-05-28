@@ -23,6 +23,7 @@ router.post('/newwork',async (req,res)=>{
 //get work
 
 router.post('/imageupload' , upload.array('photo') , async(req,res) =>{
+    console.log(req.files)
     res.status(201).json(req.files)
 })
 
